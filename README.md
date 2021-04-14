@@ -6,7 +6,7 @@ Ubuntu VM on a mac with M1
 3. Login to the server and set it up with
     ```bash
     git clone https://github.com/amissine/m1-utm-ubuntu.git
-    cd m1-utm-ubuntu; ./bootstrap.sh
+    cd m1-utm-ubuntu; ./setup.sh
     ```
 
 Run `cd ~/m1-utm-ubuntu; ./reset.sh` to reset the server to its original configuration.
