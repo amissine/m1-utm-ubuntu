@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
+bootstrap () { # {{{1
+  echo '- bootstrapping...'
+
+  # Create our id_ed25519 pair.
+  ssh-keygen -t ed25519 -f id_ed25519
+
+  echo fake > ~/.ssh/config
+  echo '  ...done'
+}
+
+# Bootstrap {{{1
+#
 # Right after the server has been created, noone can SSH to it. But the server's 
 # original configuration supports SSH to its creator with password authentication,
 # so initially we create our id_ed25519 pair, pass the public key to the creator,
@@ -10,18 +22,10 @@
 # and sets the connect timeout.
 [ -e ~/.ssh/config ] || bootstrap
 
+# Setup {{{1
+#
 # Our server is set up when its users can SSH to it. A user can SSH to our server
 # using remote port forwarding. To enable this, the server tries and connects to
 # its users (creator included).
 echo '- setting up...'
 echo '  ...done'
-
-bootstrap () {
-  echo '- bootstrapping...'
-
-  # Create our id_ed25519 pair.
-  ssh-keygen -t ed25519 -f id_ed25519
-
-  echo fake > ~/.ssh/config
-  echo '  ...done'
-}
