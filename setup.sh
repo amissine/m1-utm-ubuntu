@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
 
+. config.sh
+
 bootstrap () { # {{{1
   echo '- bootstrapping...'
 
-  # Create our id_ed25519 pair (no passphrase).
-  rm -f ~/.ssh/known_hosts ~/.ssh/id_ed25519*
-  ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -q -N ''
+  # Create our id_ed25519 pair (no passphrase) {{{2
+  local t='ed25519'
+  local key="~/.ssh/id_$t"
+  rm -f ~/.ssh/known_hosts ${key}*
+  ssh-keygen -t $t -f $key -q -N ''
+
+  # SSH to the creator with password authentication {{{2
+  local pubkey="${key}.pub"
+  local uri=$1
+  cat $pubkey | ssh $uri
+  # }}}2
 
   echo fake > ~/.ssh/config
   echo '  ...done'; echo
@@ -21,7 +31,7 @@ bootstrap () { # {{{1
 # uses the data to propagate its public key to the rest of users. When this is
 # done, a new ~/.ssh/config is being written. It disables password authentication
 # and sets the connect timeout.
-[ -e ~/.ssh/config ] || bootstrap
+[ -e ~/.ssh/config ] || bootstrap $CREATOR
 
 # Setup {{{1
 #
