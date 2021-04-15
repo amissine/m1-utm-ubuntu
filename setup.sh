@@ -4,8 +4,9 @@ bootstrap () { # {{{1
   echo '- bootstrapping...'
 
   # Create our id_ed25519 pair (no passphrase).
+  echo > /tmp/twoEmptyLines.txt; echo >> /tmp/twoEmptyLines.txt
   rm -f ~/.ssh/id_ed25519*
-  ( echo; echo; ) | ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519
+  ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 < /tmp/twoEmptyLines.txt
 
   echo fake > ~/.ssh/config
   echo '  ...done'; echo
