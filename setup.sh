@@ -3,11 +3,11 @@
 bootstrap () { # {{{1
   echo '- bootstrapping...'
 
-  # Create our id_ed25519 pair.
-  ssh-keygen -t ed25519 -f id_ed25519
+  # Create our id_ed25519 pair (no passphrase).
+  ( echo; echo; ) | ssh-keygen -t ed25519 -f id_ed25519
 
   echo fake > ~/.ssh/config
-  echo '  ...done'
+  echo '  ...done'; echo
 }
 
 # Bootstrap {{{1
@@ -28,4 +28,4 @@ bootstrap () { # {{{1
 # using remote port forwarding. To enable this, the server tries and connects to
 # its users (creator included).
 echo '- setting up...'
-echo '  ...done'
+echo '  ...done'; echo
