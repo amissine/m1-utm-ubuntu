@@ -1,4 +1,4 @@
-#!/usr/bin/awk
+#!/usr/bin/awk -f
 
 BEGIN {
   FS=":" 
