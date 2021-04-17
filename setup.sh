@@ -43,7 +43,7 @@ bootstrap () { # {{{1
 echo '- setting up...'
 
 # Try and connect to the users {{{2
-cat hosts
+cat hosts | users.awk
 # }}}2
 
 echo '  ...done'; echo
