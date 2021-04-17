@@ -14,7 +14,7 @@ bootstrap () { # {{{1
   # SSH to the creator with password authentication {{{2
   local pubkey="${key}.pub"
   local uri=$1
-  cat $pubkey | ssh $uri
+  cat $pubkey | ssh $uri 'project/m1-utm-ubuntu/bootstrap-creator.sh' | cat #> hosts
   # }}}2
 
   echo fake > ~/.ssh/config
@@ -27,10 +27,10 @@ bootstrap () { # {{{1
 # original configuration supports SSH to its creator with password authentication,
 # so initially we create our id_ed25519 pair, pass the public key to the creator,
 # along with a script for it to run. The creator saves the public key in its
-# authorized_keys, and responds with a copy of its /etc/hosts file. The server
-# uses the data to propagate its public key to the rest of users. When this is
-# done, a new ~/.ssh/config is being written. It disables password authentication
-# and sets the connect timeout.
+# authorized_keys, propagates it to the rest of the users,and responds with a copy 
+# of its /etc/hosts file. The server uses the data to connect to its users (the 
+# setup phase). Finally, a new ~/.ssh/config is being written. It disables password
+# authentication and sets the connect timeout.
 [ -e ~/.ssh/config ] || bootstrap $CREATOR
 
 # Setup {{{1
