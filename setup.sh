@@ -7,7 +7,7 @@ bootstrap () { # {{{1
 
   # Create our id_ed25519 pair (no passphrase) {{{2
   local t='ed25519'
-  local key="~/.ssh/id_$t"
+  local key="$HOME/.ssh/id_$t"
   rm -f ~/.ssh/known_hosts ${key}*
   ssh-keygen -t $t -f $key -q -N ''
 
