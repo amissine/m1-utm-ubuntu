@@ -3,5 +3,5 @@
 BEGIN {
   drop="yes"
 } 
-$drop == "no" { print $0 }
+drop == "no" { print $0 }
 $0 == "# Known hosts:" { drop="no" }
