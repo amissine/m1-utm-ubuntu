@@ -1,6 +1,7 @@
 #!/usr/bin/awk -f
 
 BEGIN {
-  FS=":" 
+  drop="yes"
 } 
-{ print $1 }
+$drop == "no" { print $0 }
+$0 == "# Known hosts:" { drop="no" }
