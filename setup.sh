@@ -14,10 +14,12 @@ bootstrap () { # {{{1
   # SSH to the creator with password authentication {{{2
   local pubkey="${key}.pub"
   local uri=$1
-  cat $pubkey | ssh $uri 'project/m1-utm-ubuntu/bootstrap-creator.sh' | cat #> hosts
+  cat $pubkey | ssh $uri 'project/m1-utm-ubuntu/bootstrap-creator.sh' | cat > hosts
+
+  # Write new ~/.ssh/config {{{2
+  echo fake > ~/.ssh/config
   # }}}2
 
-  echo fake > ~/.ssh/config
   echo '  ...done'; echo
 }
 
@@ -39,4 +41,9 @@ bootstrap () { # {{{1
 # using remote port forwarding. To enable this, the server tries and connects to
 # its users (creator included).
 echo '- setting up...'
+
+# Try and connect to the users {{{2
+cat hosts
+# }}}2
+
 echo '  ...done'; echo
