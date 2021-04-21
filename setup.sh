@@ -5,8 +5,9 @@
 add_creator () { # {{{1
   echo '  - adding creator...'
 
-  sudo echo "# Adding creator on $(date)" >> /etc/hosts
-  sudo echo "${CREATOR_IP} ${CREATOR_HOSTNAME} ## ${CREATOR_USERNAME}" >> /etc/hosts
+  local ci="${CREATOR_IP} ${CREATOR_HOSTNAME} ## ${CREATOR_USERNAME}"
+  sudo sh -c 'echo "# Adding creator info on $(date)" >> /etc/hosts'
+  sudo sh -c 'echo "$ci" >> /etc/hosts' && touch creator_added
 
   echo '    ...done'; echo
 }
