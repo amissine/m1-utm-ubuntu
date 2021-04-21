@@ -5,6 +5,12 @@ Ubuntu VM on a mac with M1
 2. Start the server.
 3. Login to the server and set it up with
     ```bash
+    sudo chmod 0777 /etc/sudoers.d
+    sudo echo $USER ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USER
+    sudo chown root /etc/sudoers.d/$USER
+    sudo chgrp root /etc/sudoers.d/$USER
+    sudo chmod 0440 /etc/sudoers.d/$USER
+    sudo chmod 0440 /etc/sudoers.d
     git clone https://github.com/amissine/m1-utm-ubuntu.git
     cd m1-utm-ubuntu; ./setup.sh
     ```
