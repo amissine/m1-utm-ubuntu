@@ -1,0 +1,5 @@
+Host *
+  ConnectTimeout 5
+
+# Allow remote port forwarding
+ExitOnForwardFailure yes

@@ -2,8 +2,20 @@
 
 . config.sh
 
+add_creator () { # {{{1
+  echo '  - adding creator...'
+
+  sudo echo "# Adding creator on $(date)" >> /etc/hosts
+  sudo echo "${CREATOR_IP} ${CREATOR_HOSTNAME} ## ${CREATOR_USERNAME}" >> /etc/hosts
+
+  echo '    ...done'; echo
+}
+
 bootstrap () { # {{{1
   echo '- bootstrapping...'
+
+  # Add creator info to /etc/hosts {{{2
+  [ -e creator_added ] || add_creator
 
   # Create our id_ed25519 pair (no passphrase) {{{2
   local t='ed25519'
@@ -13,12 +25,12 @@ bootstrap () { # {{{1
 
   # SSH to the creator with password authentication {{{2
   local pubkey="${key}.pub"
-  local uri=$1
+  local uri="${CREATOR_USERNAME}@${CREATOR_HOSTNAME}"
   local script=${2:-'project/m1-utm-ubuntu/bootstrap-creator.sh'}
   ssh $uri $script < $pubkey > response
 
   # Write new ~/.ssh/config {{{2
-  echo fake > ~/.ssh/config
+  cp config ~/.ssh/
   # }}}2
 
   echo '  ...done'; echo
@@ -39,7 +51,7 @@ bootstrap () { # {{{1
 # Finally, a new ~/.ssh/config is being written. It allows remote port forwarding
 # and sets the connect timeout. This completes the bootstrap.
 #
-[ -e ~/.ssh/config ] || bootstrap $CREATOR
+[ -e ~/.ssh/config ] || bootstrap
 
 # Setup {{{1
 #
