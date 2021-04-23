@@ -7,7 +7,7 @@ add_creator () { # {{{1
 
   local ci="${CREATOR_IP} ${CREATOR_HOSTNAME} ## ${CREATOR_USERNAME}"
   sudo sh -c 'echo "# Adding creator info on $(date)" >> /etc/hosts'
-  sudo sh -c 'echo "$ci" >> /etc/hosts' && touch creator_added
+  echo "$ci" | sudo sh -c 'cat >> /etc/hosts' && touch creator_added
 
   echo '    ...done'; echo
 }
@@ -16,7 +16,8 @@ bootstrap () { # {{{1
   echo '- bootstrapping...'
 
   # Add creator info to /etc/hosts {{{2
-  [ -e creator_added ] || add_creator
+  # TODO [ -e creator_added ] || add_creator
+  # Presently the VM ignores /etc/hosts updates
 
   # Create our id_ed25519 pair (no passphrase) {{{2
   local t='ed25519'
@@ -26,7 +27,8 @@ bootstrap () { # {{{1
 
   # SSH to the creator with password authentication {{{2
   local pubkey="${key}.pub"
-  local uri="${CREATOR_USERNAME}@${CREATOR_HOSTNAME}"
+  # TODO local uri="${CREATOR_USERNAME}@${CREATOR_HOSTNAME}"
+  local uri="${CREATOR_USERNAME}@${CREATOR_IP}"
   local script=${2:-'project/m1-utm-ubuntu/bootstrap-creator.sh'}
   ssh $uri $script < $pubkey > response
 
