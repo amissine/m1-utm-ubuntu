@@ -15,8 +15,17 @@ add_creator () { # {{{1
   echo '    ...done'; echo
 }
 
+add_nopasswd_sudoer () { # {{{1
+  local sudoer="/etc/sudoers.d/$USER"
+  sudo -E su --command="echo $USER ALL=\(root\) NOPASSWD:ALL > $sudoer"
+  sudo su --command="chmod 0440 $sudoer"
+}
+
 bootstrap () { # {{{1
   echo '- bootstrapping...'
+
+  # Add $USER to NOPASSWD sudoers {{{2
+  [ -e /etc/sudoers.d/$USER ] || add_nopasswd_sudoer
 
   # Add creator info to /etc/hosts {{{2
   # TODO [ -e creator_added ] || add_creator
