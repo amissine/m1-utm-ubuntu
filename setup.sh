@@ -16,9 +16,27 @@ add_creator () { # {{{1
 }
 
 add_nopasswd_sudoer () { # {{{1
+  echo '  - adding NOPASSWD sudoer...'
+
   local sudoer="/etc/sudoers.d/$USER"
   sudo -E su --command="echo $USER ALL=\(root\) NOPASSWD:ALL > $sudoer"
-  sudo su --command="chmod 0440 $sudoer"
+  sudo su --command='chmod 0440 $sudoer'
+
+  echo '    ...done'; echo
+}
+
+bashrc_update () { # {{{1
+  echo "  - removing $HOME/.bashrc..."
+
+  rm -f $HOME/.bashrc
+  if [ -e /root/.bashrc ]; then
+    sudo mv /root/.bashrc /root/.bashrc.hidden
+    sudo mv /etc/bash.bashrc /etc/bash.bashrc.old
+    sudo cp bash.bashrc /etc/
+    sudo init 6
+  fi
+
+  echo '    ...done'; echo
 }
 
 bootstrap () { # {{{1
@@ -26,6 +44,9 @@ bootstrap () { # {{{1
 
   # Add $USER to NOPASSWD sudoers {{{2
   [ -e /etc/sudoers.d/$USER ] || add_nopasswd_sudoer
+
+  # Update .bashrc files and restart guest server {{{2
+  [ -e $HOME/.bashrc ] && bashrc_update
 
   # Add creator info to /etc/hosts {{{2
   # TODO [ -e creator_added ] || add_creator
