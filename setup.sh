@@ -63,7 +63,7 @@ bootstrap () { # {{{1
   # TODO local uri="${CREATOR_USERNAME}@${CREATOR_HOSTNAME}"
   local uri="${CREATOR_USERNAME}@${CREATOR_IP}"
   local script=${2:-'project/m1-utm-ubuntu/bootstrap-creator.sh'}
-  ssh $uri $script < $pubkey > response
+  ssh $uri $script < $pubkey >> "$HOME/.ssh/authorized_keys" 
 
   # Write new ~/.ssh/config {{{2
   cp config ~/.ssh/
