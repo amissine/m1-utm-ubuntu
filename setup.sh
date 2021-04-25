@@ -29,7 +29,7 @@ bashrc_update () { # {{{1
   echo "  - removing $HOME/.bashrc..."
 
   rm -f $HOME/.bashrc
-  if [ -e /root/.bashrc ]; then
+  if sudo [ -e /root/.bashrc ]; then
     sudo mv /root/.bashrc /root/.bashrc.hidden
     sudo mv /etc/bash.bashrc /etc/bash.bashrc.old
     sudo cp bash.bashrc /etc/
