@@ -8,5 +8,3 @@ Ubuntu VM on a mac with M1
     git clone https://github.com/amissine/m1-utm-ubuntu.git
     cd m1-utm-ubuntu; ./setup.sh
     ```
-
-Run `cd ~/m1-utm-ubuntu; ./reset.sh` to reset the server to its original configuration.
