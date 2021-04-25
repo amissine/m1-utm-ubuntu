@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# See also:
+# https://wiki.qemu.org/Documentation/Networking
+
 . config.sh
 
 add_creator () { # {{{1
