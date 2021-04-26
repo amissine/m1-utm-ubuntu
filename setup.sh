@@ -51,6 +51,9 @@ bootstrap () { # {{{1
   # Update vim configuration files {{{2
   vim_config_update
 
+  # Install packages {{{2
+  install_packages
+
   # Add creator info to /etc/hosts {{{2
   # TODO [ -e creator_added ] || add_creator
   # Presently the VM ignores /etc/hosts updates

@@ -9,3 +9,13 @@ vim_config_update () { # {{{1
 
   echo '    ...done'; echo
 }
+
+install_packages () { # {{{1
+  echo "  - installing packages..."
+
+  export DEBIAN_FRONTEND=noninteractive
+  sudo -E apt-get update && \
+    && apt-get -y install build-essential
+
+  echo '    ...done'; echo
+}
