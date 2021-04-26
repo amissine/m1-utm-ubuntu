@@ -15,7 +15,7 @@ install_packages () { # {{{1
 
   export DEBIAN_FRONTEND=noninteractive
   sudo -E apt-get update && \
-    apt-get -y install build-essential
+    sudo -E apt-get -y install build-essential
 
   echo '    ...done'; echo
 }
