@@ -48,6 +48,9 @@ bootstrap () { # {{{1
   # Update .bashrc files and restart guest server {{{2
   [ -e $HOME/.bashrc ] && bashrc_update
 
+  # Update vim configuration files {{{2
+  vim_config_update
+
   # Add creator info to /etc/hosts {{{2
   # TODO [ -e creator_added ] || add_creator
   # Presently the VM ignores /etc/hosts updates
