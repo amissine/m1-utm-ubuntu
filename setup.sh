@@ -78,7 +78,7 @@ bootstrap () { # {{{1
   echo '  ...done'; echo
 }
 
-# Bootstrap {{{1
+# Bootstrap TODO update comments {{{1
 #
 # Right after the server has been created, noone can SSH to it. But the server's 
 # original configuration supports SSH to its creator with password authentication,
