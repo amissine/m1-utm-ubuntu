@@ -17,5 +17,7 @@ install_packages () { # {{{1
   sudo -E apt-get update && \
     sudo -E apt-get -y install build-essential
 
+  make
+
   echo '    ...done'; echo
 }
