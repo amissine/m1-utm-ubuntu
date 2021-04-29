@@ -57,3 +57,5 @@ dkms.conf
 
 # m1-utm-ubuntu
 session.vim
+sources/
+hashes/
