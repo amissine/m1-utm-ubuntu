@@ -57,5 +57,7 @@ dkms.conf
 
 # m1-utm-ubuntu
 session.vim
+musl-1.2.2
 sources/
 hashes/
+*.build/

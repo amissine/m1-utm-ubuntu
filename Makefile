@@ -37,6 +37,7 @@ hashes/%.tar.gz.asc: H_URL = $(shell \
 hashes/%.tar.gz.asc: | hashes # {{{2
 	rm -rf $@.tmp; mkdir -p $@.tmp
 	cd $@.tmp; $(DL_CMD) $(notdir $@) $(H_URL)/$(notdir $@) && touch $(notdir $@)
+	mv $@.tmp/$(notdir $@) $@ && rm -rf $@.tmp
 
 sources: # {{{2
 	mkdir -p $@
@@ -52,7 +53,7 @@ sources/%.tar.gz: S_URL = $(shell \
 sources/%.tar.gz: hashes/%.tar.gz.asc | sources # {{{2
 	rm -rf $@.tmp; mkdir -p $@.tmp
 	cd $@.tmp; $(DL_CMD) $(notdir $@) $(S_URL)/$(notdir $@) && touch $(notdir $@)
-	exit 69
+	mv $@.tmp/$(notdir $@) $@ && rm -rf $@.tmp
 
 %.build: sources/%.tar.gz # {{{2
 	rm -rf $@.tmp; mkdir -p $@.tmp
@@ -75,4 +76,5 @@ all: | $(PACKAGES) # {{{2
 
 # }}}2
 
-.SECONDARY: # No intermediate targets to remove {{{1
+# No intermediate targets to remove {{{1
+.SECONDARY:
