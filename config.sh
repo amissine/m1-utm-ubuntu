@@ -15,7 +15,7 @@ install_packages () { # {{{1
 
   export DEBIAN_FRONTEND=noninteractive
   sudo -E apt-get update && \
-    sudo -E apt-get -y install build-essential autoconf automake libtool
+    sudo -E apt-get -y install build-essential # autoconf automake libtool
 
   make
 

@@ -1,4 +1,4 @@
-# Install musl and libressl {{{1
+# Install musl, libressl and s6 packages {{{1
 #
 # See also:
 # https://www.gnu.org/software/make/manual/
@@ -12,10 +12,20 @@ $(info - LOCAL_MACHINE $(LOCAL_MACHINE), MAKE_J $(MAKE_J))
 PACKAGES := $(basename $(basename $(basename \
   $(shell cd hashes; for h in *; do echo $$h; done))))
 MUSL := $(filter musl-%, $(PACKAGES))
-PACKAGES := $(MUSL) $(filter-out musl-%, $(PACKAGES))
+LIBRESSL := $(filter libressl-%, $(PACKAGES))
+SKALIBS := $(filter skalibs-%, $(PACKAGES))
+NSSS := $(filter nsss-%, $(PACKAGES))
+UTMPS := $(filter utmps-%, $(PACKAGES))
+PACKAGES := $(MUSL) $(LIBRESSL) $(SKALIBS) $(NSSS) $(UTMPS) \
+  $(filter-out utmps-%, \
+  $(filter-out nsss-%, \
+  $(filter-out skalibs-%, \
+  $(filter-out libressl-%, \
+  $(filter-out musl-%, $(PACKAGES))))))
 
 MUSL_URL := http://musl.libc.org/releases
 LIBRESSL_URL := https://ftp.openbsd.org/pub/OpenBSD/LibreSSL
+S6_URL := http://www.skarnet.org/software
 
 it: # the default goal {{{1
 
@@ -26,8 +36,10 @@ sources: # {{{2
 	mkdir -p $@
 
 # Target-specific variable URL {{{2
-$(patsubst hashes/%.sha1,sources/%,$(wildcard hashes/musl*)): URL = $(MUSL_URL)
-$(patsubst hashes/%.sha1,sources/%,$(wildcard hashes/libressl*)): URL = $(LIBRESSL_URL)
+sources/%: URL=$(S6_URL)/$(subst $(SPACE),-,$(strip \
+  $(filter-out %.gz,$(subst -, ,$(notdir $@)))))
+$(patsubst hashes/%.sha1,sources/%,$(wildcard hashes/musl*)): URL=$(MUSL_URL)
+$(patsubst hashes/%.sha1,sources/%,$(wildcard hashes/libressl*)): URL=$(LIBRESSL_URL)
 
 sources/%: hashes/%.sha1 | sources # {{{2
 	rm -rf $@.tmp; mkdir -p $@.tmp
@@ -45,7 +57,7 @@ sources/%: hashes/%.sha1 | sources # {{{2
 
 # Target-specific variable PKG_NAME, can have '-' inside {{{2
 %: PKG_NAME = $(subst $(SPACE),-,$(strip \
-	$(filter-out %.2 %.5,$(subst -, ,$@))))
+	$(filter-out %.0 %.1 %.2 %.4 %.5,$(subst -, ,$@))))
 
 %: %.build # {{{2
 	$(MAKE) -f $(PKG_NAME).mak BUILD_DIR=$<
