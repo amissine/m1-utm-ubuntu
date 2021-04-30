@@ -104,7 +104,7 @@ echo '- setting up...'
 
 # Try and connect to the users {{{2
 # TODO ./users.awk response
-cat response
+# cat response
 # }}}2
 
 echo '  ...done'; echo
