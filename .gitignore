@@ -58,5 +58,6 @@ dkms.conf
 # m1-utm-ubuntu
 session.vim
 musl-1.2.2
+libressl-3.2.5
 sources/
 *.build/

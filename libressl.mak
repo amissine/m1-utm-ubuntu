@@ -6,9 +6,9 @@ include config.mak # {{{1
 it: # the default goal
 
 it: | $(BUILD_DIR) # {{{1
-	cd $|; CC=$(CC) ./configure
-	cd $|; CC=$(CC) make -j $(MAKE_J)
-	cd $|; CC=$(CC) sudo -E make install
+	cd $|; CC=$(MUSL_CC) ./configure --disable-tests
+	cd $|; CC=$(MUSL_CC) make -j $(MAKE_J)
+	cd $|; CC=$(MUSL_CC) sudo -E make install
 
 #  cd /package/admin; \
 #    sudo rm -f $(PACKAGE_NAME); sudo ln -s $(PACKAGE) $(PACKAGE_NAME)
