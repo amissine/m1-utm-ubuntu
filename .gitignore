@@ -59,5 +59,4 @@ dkms.conf
 session.vim
 musl-1.2.2
 sources/
-hashes/
 *.build/

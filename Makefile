@@ -8,51 +8,31 @@ include config.mak # {{{1
 
 $(info - LOCAL_MACHINE $(LOCAL_MACHINE), MAKE_J $(MAKE_J))
 
-MUSL_RELEASE := musl-1.2.2 # {{{2
+# PACKAGES and URLs {{{1
+PACKAGES := $(basename $(basename $(basename \
+  $(shell cd hashes; for h in *; do echo $$h; done))))
+MUSL := $(filter musl-%, $(PACKAGES))
+PACKAGES := $(MUSL) $(filter-out musl-%, $(PACKAGES))
+
 MUSL_URL := http://musl.libc.org/releases
-MUSL_GZ := $(MUSL_RELEASE).tar.gz
-MUSL_ASC := $(MUSL_GZ).asc
+LIBRESSL_URL := https://ftp.openbsd.org/pub/OpenBSD/LibreSSL
 
-URLS := url["musl"]="$(MUSL_URL)"; url["libressl"]="$(LIBRESSL_URL)" # {{{2
-
-PACKAGES := $(MUSL_RELEASE) $(LIBRESSL_RELEASE) # {{{2
-# }}}2
-
-all: # the default goal {{{1
+it: # the default goal {{{1
 
 clean: 
-	rm -rf $(PACKAGES) *.build sources hashes
-
-hashes: # {{{2
-	mkdir -p $@
-
-# Target-specific variable H_PKG_NAME, can have '-' inside {{{2
-hashes/%.tar.gz.asc: H_PKG_NAME = $(subst $(SPACE),-,$(strip \
-	$(filter-out %.tar.gz.asc,$(subst -, ,$(notdir $@)))))
-
-# Target-specific variable H_URL, can have '-' inside {{{2
-hashes/%.tar.gz.asc: H_URL = $(shell \
-  echo $(H_PKG_NAME) | awk '{ $(URLS); print url[$$1] }')
-
-hashes/%.tar.gz.asc: | hashes # {{{2
-	rm -rf $@.tmp; mkdir -p $@.tmp
-	cd $@.tmp; $(DL_CMD) $(notdir $@) $(H_URL)/$(notdir $@) && touch $(notdir $@)
-	mv $@.tmp/$(notdir $@) $@ && rm -rf $@.tmp
+	rm -rf $(PACKAGES) *.build sources
 
 sources: # {{{2
 	mkdir -p $@
 
-# Target-specific variable S_PKG_NAME, can have '-' inside {{{2
-sources/%.tar.gz: S_PKG_NAME = $(subst $(SPACE),-,$(strip \
-	$(filter-out %.tar.gz,$(subst -, ,$(notdir $@)))))
+# Target-specific variable URL {{{2
+$(patsubst hashes/%.sha1,sources/%,$(wildcard hashes/musl*)): URL = $(MUSL_URL)
+$(patsubst hashes/%.sha1,sources/%,$(wildcard hashes/libressl*)): URL = $(LIBRESSL_URL)
 
-# Target-specific variable S_URL, can have '-' inside {{{2
-sources/%.tar.gz: S_URL = $(shell \
-  echo $(S_PKG_NAME) | awk '{ $(URLS); print url[$$1] }')
-
-sources/%.tar.gz: hashes/%.tar.gz.asc | sources # {{{2
+sources/%: hashes/%.sha1 | sources # {{{2
 	rm -rf $@.tmp; mkdir -p $@.tmp
-	cd $@.tmp; $(DL_CMD) $(notdir $@) $(S_URL)/$(notdir $@) && touch $(notdir $@)
+	cd $@.tmp; $(DL_CMD) $(notdir $@) $(URL)/$(notdir $@) && touch $(notdir $@)
+	cd $@.tmp; sha1sum -c $(CURDIR)/hashes/$(notdir $@).sha1
 	mv $@.tmp/$(notdir $@) $@ && rm -rf $@.tmp
 
 %.build: sources/%.tar.gz # {{{2
@@ -65,14 +45,14 @@ sources/%.tar.gz: hashes/%.tar.gz.asc | sources # {{{2
 
 # Target-specific variable PKG_NAME, can have '-' inside {{{2
 %: PKG_NAME = $(subst $(SPACE),-,$(strip \
-	$(filter-out %.2,$(subst -, ,$@))))
+	$(filter-out %.2 %.5,$(subst -, ,$@))))
 
 %: %.build # {{{2
 	$(MAKE) -f $(PKG_NAME).mak BUILD_DIR=$<
 	touch $@
 
-all: | $(PACKAGES) # {{{2
-	@echo '- $@ installed order-only prerequisites: $|'
+it: | $(PACKAGES) # {{{2
+	@echo '- $@: installed order-only prerequisites: $|'
 
 # }}}2
 
