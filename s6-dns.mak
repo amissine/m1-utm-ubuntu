@@ -3,12 +3,12 @@ PACKAGE_NAME := $(basename $(lastword $(MAKEFILE_LIST)))
 
 include config.mak # {{{1
 
-all: # the default goal
+it: # the default goal
 
-all: | $(BUILD_DIR) # {{{1
-	cd $|; CC=$(CC) \
+it: | $(BUILD_DIR) # {{{1
+	cd $|; CC=$(MUSL_CC) \
 		./configure --enable-slashpackage
-	cd $|; CC=$(CC) make -j $(MAKE_J)
-	cd $|; CC=$(CC) sudo -E make install
+	cd $|; CC=$(MUSL_CC) make -j $(MAKE_J)
+	cd $|; CC=$(MUSL_CC) sudo -E make install
 	cd /package/web; \
 		sudo rm -f $(PACKAGE_NAME); sudo ln -s $(PACKAGE) $(PACKAGE_NAME)
