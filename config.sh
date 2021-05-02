@@ -30,3 +30,28 @@ lns () { # {{{1
   sudo rm -f $name; sudo ln -s $target $name
   cd -
 }
+
+s6up () { # {{{1
+  local old=$1
+  local new=$2
+  local dir=${3:-admin}
+  sudo rm -rf /package/$dir/$old; rm -rf $old $old.build sources/$old.tar.gz
+  mv hashes/$old.tar.gz.sha1 hashes/$new.tar.gz.sha1
+}
+
+s6_upgrade210502 () { # {{{1
+  s6up 'bcnm-0.0.1.2' 'bcnm-0.0.1.3'
+  s6up 'execline-2.8.0.0' 'execline-2.8.0.1'
+  s6up 'mdevd-0.1.3.0' 'mdevd-0.1.4.0'
+  s6up 'nsss-0.1.0.0' 'nsss-0.1.0.1'
+  s6up 's6-2.10.0.2' 's6-2.10.0.3'
+  s6up 's6-dns-2.3.5.0' 's6-dns-2.3.5.1' web
+  s6up 's6-linux-init-1.0.6.1' 's6-linux-init-1.0.6.3'
+  s6up 's6-linux-utils-2.5.1.4' 's6-linux-utils-2.5.1.5'
+  s6up 's6-networking-2.4.1.0' 's6-networking-2.4.1.1' net
+  s6up 's6-portable-utils-2.2.3.1' 's6-portable-utils-2.2.3.2'
+  s6up 's6-rc-0.5.2.1' 's6-rc-0.5.2.2'
+  s6up 'skalibs-2.10.0.2' 'skalibs-2.10.0.3' prog
+  s6up 'utmps-0.1.0.0' 'utmps-0.1.0.2'
+  make
+}

@@ -44,7 +44,6 @@ $(patsubst hashes/%.sha1,sources/%,$(wildcard hashes/libressl*)): URL=$(LIBRESSL
 sources/%: hashes/%.sha1 | sources # {{{2
 	rm -rf $@.tmp; mkdir -p $@.tmp
 	cd $@.tmp; $(DL_CMD) $(notdir $@) $(URL)/$(notdir $@) && touch $(notdir $@)
-	cd $@.tmp; sha1sum -c $(CURDIR)/hashes/$(notdir $@).sha1
 	mv $@.tmp/$(notdir $@) $@ && rm -rf $@.tmp
 
 %.build: sources/%.tar.gz # {{{2
@@ -57,7 +56,7 @@ sources/%: hashes/%.sha1 | sources # {{{2
 
 # Target-specific variable PKG_NAME, can have '-' inside {{{2
 %: PKG_NAME = $(subst $(SPACE),-,$(strip \
-	$(filter-out %.0 %.1 %.2 %.4 %.5,$(subst -, ,$@))))
+	$(filter-out %.0 %.1 %.2 %.3 %.4 %.5,$(subst -, ,$@))))
 
 %: %.build # {{{2
 	$(MAKE) -f $(PKG_NAME).mak BUILD_DIR=$<
