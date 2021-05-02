@@ -56,6 +56,7 @@ dkms.conf
 *.swp
 
 # m1-utm-ubuntu
+session.vim
 bcnm-0.0.1.2
 execline-2.8.0.0
 mdevd-0.1.3.0

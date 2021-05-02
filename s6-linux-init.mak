@@ -1,3 +1,6 @@
+# See also: {{{1
+# http://skarnet.org/software/s6/s6-svscan-1.html
+
 PACKAGE := $(basename $(BUILD_DIR)) # {{{1
 PACKAGE_NAME := $(basename $(lastword $(MAKEFILE_LIST)))
 
