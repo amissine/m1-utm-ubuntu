@@ -53,5 +53,18 @@ s6_upgrade210502 () { # {{{1
   s6up 's6-rc-0.5.2.1' 's6-rc-0.5.2.2'
   s6up 'skalibs-2.10.0.2' 'skalibs-2.10.0.3' prog
   s6up 'utmps-0.1.0.0' 'utmps-0.1.0.2'
-  make
+  make SKIP_SHASUM=yes
+}
+
+update_hashes () { # {{{1
+  echo '- updating hashes:'; cd sources
+  for s in *; do
+    echo "-   $s"
+    sha1sum -b $s > $s.sha1
+    mv -f $s.sha1 ../hashes/$s.sha1
+    sleep 1; touch $s
+    r=${s%.tar.gz}
+    sleep 1; touch ../$r.build; sleep 1; touch ../$r
+  done
+  cd -
 }

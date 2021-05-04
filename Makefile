@@ -44,7 +44,8 @@ $(patsubst hashes/%.sha1,sources/%,$(wildcard hashes/libressl*)): URL=$(LIBRESSL
 sources/%: hashes/%.sha1 | sources # {{{2
 	rm -rf $@.tmp; mkdir -p $@.tmp
 	cd $@.tmp; $(DL_CMD) $(notdir $@) $(URL)/$(notdir $@) && touch $(notdir $@)
-	#[ -n '$(SHASUM)' ] && { cd $@.tmp; sha1sum -c $(CURDIR)/hashes/$(notdir $@).sha1; }
+	[ -n '$(SKIP_SHASUM)' ] || \
+		{ cd $@.tmp; sha1sum -c $(CURDIR)/hashes/$(notdir $@).sha1; }
 	mv $@.tmp/$(notdir $@) $@ && rm -rf $@.tmp
 
 %.build: sources/%.tar.gz # {{{2
@@ -65,10 +66,6 @@ sources/%: hashes/%.sha1 | sources # {{{2
 
 it: | $(PACKAGES) # {{{2
 	@echo '- $@: order-only prerequisites: $|'
-	#[ -n '$(SHASUM)' ] && { echo '- $@: updating hashes:'; cd sources; \
-	#	for s in *; do echo "-   $$s"; \
-	#	sha1sum -b $$s > $$s.sha1; \
-	#	rm ../hashes/$$s.sha1; mv $$s.sha1 ../hashes/$$s.sha1; done; }
 
 # }}}2
 
