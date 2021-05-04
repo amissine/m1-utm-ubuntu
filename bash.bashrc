@@ -1,6 +1,15 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# In order to switch interactively between emacs and vi editing modes, use the 
+# ‘set -o emacs’ and ‘set -o vi’ commands. The Readline default is emacs mode.
+#
+# When you enter a line in vi mode, you are already placed in ‘insertion’ mode,
+# as if you had typed an ‘i’. Pressing ESC switches you into ‘command’ mode, where
+# you can edit the text of the line with the standard vi movement keys, move to
+# previous history lines with ‘k’ and subsequent lines with ‘j’, and so forth.
+set -o vi
+
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
