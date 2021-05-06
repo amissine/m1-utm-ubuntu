@@ -62,9 +62,9 @@ update_hashes () { # {{{1
     echo "-   $s"
     sha1sum -b $s > $s.sha1
     mv -f $s.sha1 ../hashes/$s.sha1
-    sleep 1; touch $s
+    sleep 0.1; touch $s
     r=${s%.tar.gz}
-    sleep 1; touch ../$r.build; sleep 1; touch ../$r
+    sleep 0.1; touch ../$r.build; sleep 0.1; touch ../$r
   done
   cd -
 }
